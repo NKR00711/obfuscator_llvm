@@ -70,8 +70,8 @@ git apply ../obfuscator.patch
 ### 2. Build clang utils without any libs
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;lld" -DLLVM_ENABLE_LLD=ON -DLLVM_STATIC_LINK_CXX_STDLIB=ON -S llvm -B build
-cmake --build build --parallel
+cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD='X86;ARM;AArch64' -DLLVM_ENABLE_PROJECTS="clang;lld" -DLLVM_ENABLE_LLD=ON -DLLVM_STATIC_LINK_CXX_STDLIB=ON -S llvm -B build
+cmake --build build -j16
 ```
 
 Also you can use CMake variable ` LLVM_TARGETS_TO_BUILD` to build only for required platforms, e.g. ` -DLLVM_TARGETS_TO_BUILD="ARM"` to build only for **armv7**
@@ -79,7 +79,7 @@ Also you can use CMake variable ` LLVM_TARGETS_TO_BUILD` to build only for requi
 ### 3. Install clang utils to android-ndk
 
 ```bash
-cmake --install build --prefix ${ANDROID_NDK}/toolchains/llvm/prebuilt/linux-x86_64/
+cmake --install build --prefix ${ANDROID_NDK}/toolchains/llvm/prebuilt/darwin-x86_64/
 ```
 
 Here `${ANDROID_NDK}` is path to folder with android-ndk
@@ -87,7 +87,7 @@ Here `${ANDROID_NDK}` is path to folder with android-ndk
 ### 4. Copy android libs to use with obfuscated LLVM
 
 ```bash
-cp -r ${ANDROID_NDK}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/${ANDLLVM}/lib ${ANDROID_NDK}/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/${OLLVM}
+cp -r ${ANDROID_NDK}/toolchains/llvm/prebuilt/darwin-x86_64/lib64/clang/${ANDLLVM}/lib ${ANDROID_NDK}/toolchains/llvm/prebuilt/darwin-x86_64/lib/clang/${OLLVM}
 ```
 
 Here:
